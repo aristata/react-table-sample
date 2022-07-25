@@ -3,6 +3,7 @@ import { useFilters, useGlobalFilter, useTable } from "react-table";
 import MOCK_DATA from "./MOCK_DATA.json";
 import { COLUMNS, GROUPED_COLUMNS } from "./columns";
 import { GlobalFilter } from "./GlobalFilter";
+import { ColumnFilter } from "./ColumnFilter";
 
 interface SampleTableColumn {}
 
@@ -10,6 +11,12 @@ export const FilteringTable = () => {
   // useMemo 를 사용하는 이유는 리렌더링시 리소스 낭비를 막기 위해서
   const columns = useMemo(() => COLUMNS, []);
   const data = useMemo(() => MOCK_DATA, []);
+
+  const defaultColumn = useMemo(() => {
+    return {
+      Filter: ColumnFilter
+    };
+  }, []);
 
   const {
     getTableProps,
@@ -24,7 +31,8 @@ export const FilteringTable = () => {
     {
       // @ts-ignore
       columns,
-      data
+      data,
+      defaultColumn
     },
     useFilters,
     useGlobalFilter
