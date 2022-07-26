@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { InputHTMLAttributes, useMemo } from "react";
 import { usePagination, useTable } from "react-table";
 import MOCK_DATA from "./MOCK_DATA.json";
 import { COLUMNS, GROUPED_COLUMNS } from "./columns";
@@ -18,18 +18,26 @@ export const PaginationTable = () => {
     canNextPage, // 다음 페이지가 있는지에 대한 boolean
     canPreviousPage, // 이전 페이지가 있는지에 대한 boolean
     pageOptions,
+    gotoPage, // 특정 페이지로 이동하는 헬퍼 펑션
+    pageCount,
     state, // 테이블에 대한 상태들을 가지고 있다 -> index.d.ts 656 line -> UsePaginationState
     prepareRow
   } = useTable(
     {
       // @ts-ignore
       columns,
-      data
+      data,
+      initialState: { pageIndex: 2 }
     },
     usePagination
   );
 
   const { pageIndex } = state;
+
+  const pageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const pageNumber = e.target.value ? +e.target.value - 1 : 0;
+    gotoPage(pageNumber);
+  };
 
   return (
     <>
@@ -65,11 +73,26 @@ export const PaginationTable = () => {
             {pageIndex + 1} of {pageOptions.length}
           </strong>{" "}
         </span>
+        <span>
+          | Go to page:{" "}
+          <input
+            type={"number"}
+            defaultValue={pageIndex + 1}
+            onChange={pageChange}
+            style={{ width: "50px" }}
+          ></input>
+        </span>
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          {"<<"}
+        </button>
         <button onClick={previousPage} disabled={!canPreviousPage}>
           이전 페이지
         </button>
         <button onClick={nextPage} disabled={!canNextPage}>
           다음 페이지
+        </button>
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {">>"}
         </button>
       </div>
     </>
