@@ -21,6 +21,7 @@ export const PaginationTable = () => {
     gotoPage, // 특정 페이지로 이동하는 헬퍼 펑션
     pageCount,
     state, // 테이블에 대한 상태들을 가지고 있다 -> index.d.ts 656 line -> UsePaginationState
+    setPageSize, // state 에 있는 pageSize 를 변환 시키는 헬퍼 펑션
     prepareRow
   } = useTable(
     {
@@ -32,11 +33,15 @@ export const PaginationTable = () => {
     usePagination
   );
 
-  const { pageIndex } = state;
+  const { pageIndex, pageSize } = state;
 
-  const pageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changePage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pageNumber = e.target.value ? +e.target.value - 1 : 0;
     gotoPage(pageNumber);
+  };
+
+  const changePageSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPageSize(+e.target.value);
   };
 
   return (
@@ -78,10 +83,17 @@ export const PaginationTable = () => {
           <input
             type={"number"}
             defaultValue={pageIndex + 1}
-            onChange={pageChange}
+            onChange={changePage}
             style={{ width: "50px" }}
           ></input>
         </span>
+        <select value={pageSize} onChange={changePageSize}>
+          {[10, 25, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {"<<"}
         </button>
