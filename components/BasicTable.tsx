@@ -3,8 +3,6 @@ import { useTable } from "react-table";
 import MOCK_DATA from "./MOCK_DATA.json";
 import { COLUMNS, GROUPED_COLUMNS } from "./columns";
 
-interface SampleTableColumn {}
-
 export const BasicTable = () => {
   // useMemo 를 사용하는 이유는 리렌더링시 리소스 낭비를 막기 위해서
   const columns = useMemo(() => GROUPED_COLUMNS, []);
