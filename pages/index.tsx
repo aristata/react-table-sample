@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import { BasicTable } from "../components/BasicTable";
+import { ColumnHiding } from "../components/ColumnHiding";
 import { ColumnOrder } from "../components/ColumnOrder";
 import { FilteringTable } from "../components/FilteringTable";
 import { PaginationTable } from "../components/PaginationTable";
@@ -9,7 +10,7 @@ import { SortingTable } from "../components/SortingTable";
 const Home: NextPage = () => {
   return (
     <div>
-      <ColumnOrder></ColumnOrder>
+      <ColumnHiding></ColumnHiding>
     </div>
   );
 };
